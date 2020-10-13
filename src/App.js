@@ -11,6 +11,7 @@ const spotify = new SpotifyWebApi();
 function App() {
   //Run some code based on a given condition
   const [{ user, token }, dispatch] = useDataLayerValue();
+  // const user_id = user.id;
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -34,9 +35,18 @@ function App() {
           playlists: playlists,
         });
       });
+
+      spotify.getPlaylist("37i9dQZEVXcEm6Q25GuOgW").then((response) => {
+        dispatch({
+          type: "SET_DISCOVER_WEEKLY",
+          discover_weekly: response,
+        })
+        console.log(response);
+      });
+
+      console.log(user);
     }
   }, []);
-  console.log(token);
   return (
     <div className="app">
       {token ? <Player spotify={spotify} /> : <Login />}
